@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/past_readings_menu_item"
+        android:orderInCategory="100"
+        android:title="@string/menu_past_readings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/how_to_menu_item"
+        android:orderInCategory="200"
+        android:title="@string/menu_howTo"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/about_menu_item"
+        android:orderInCategory="300"
+        android:title="@string/menu_about"
+        app:showAsAction="never" />
+</menu>
