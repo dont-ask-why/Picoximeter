@@ -12,42 +12,27 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ParcelUuid;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.UUID;
 
 public class ScanBLEActivity extends AppCompatActivity {
-    static final UUID SERVICE_UUID = UUID.fromString("00001822-0000-1000-8000-00805f9b34fb");
-    static final ParcelUuid SERVICE_PARCEL_UUID = new ParcelUuid(SERVICE_UUID);
-
-    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
-
-    private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
-    private Activity itself = this;
+    private final Activity itself = this;
 
     private ScanCallback leScanCallback;
     private boolean scanning;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     private static final long SCAN_PERIOD = 10000;
 
@@ -65,42 +50,16 @@ public class ScanBLEActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.scan_ble_listView);
 
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+
+        BluetoothAccess.checkForBtLeEnabled(bluetoothAdapter,this);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
 
-        if(bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-
-            ActivityResultLauncher<Intent> mLauncher = registerForActivityResult(
-                    new StartActivityForResult(),
-                    result -> {
-                        if(result.getResultCode() > -1) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle(getText(R.string.scan_bt_permission_title));
-                            builder.setMessage(getText(R.string.scan_bt_permission_text));
-                            builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(dialog -> finish());
-                            builder.show();
-                        } else {
-                            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                            bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
-                        }
-                    });
-
-            mLauncher.launch(enableIntent);
-        }
-
-        if(this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getText(R.string.scan_pos_permission_title));
-            builder.setMessage(getText(R.string.scan_pos_permission_text));
-            builder.setPositiveButton(android.R.string.ok, null);
-            builder.setOnDismissListener(dialog -> requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_FINE_LOCATION));
-            builder.show();
-        }
+        BluetoothAccess.checkForBtPermissions(this);
 
         leScanCallback = new ScanCallback() {
-            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
                 BluetoothDevice device = result.getDevice();
@@ -127,6 +86,32 @@ public class ScanBLEActivity extends AppCompatActivity {
             finish();
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //TODO: Go through each entry in permissions and grant results, if matching to com.picoximeter.BluetoothAccess finish the activity
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == BluetoothAccess.PERMISSION_REQUEST_BLE_SCAN){
+            for(int i = 0; i < permissions.length; i++){
+                String permission = permissions[i];
+                int result = grantResults[i];
+
+                if(permission.equals(Manifest.permission.BLUETOOTH_SCAN) && result == PackageManager.PERMISSION_DENIED){
+                    finish();
+                }
+            }
+        } else if (requestCode == BluetoothAccess.PERMISSION_REQUEST_FINE_LOCATION){
+            for(int i = 0; i < permissions.length; i++){
+                String permission = permissions[i];
+                int result = grantResults[i];
+
+                if(permission.equals(Manifest.permission.ACCESS_FINE_LOCATION) && result == PackageManager.PERMISSION_DENIED){
+                    finish();
+                }
+            }
+        }
     }
 
     @Override
@@ -159,7 +144,7 @@ public class ScanBLEActivity extends AppCompatActivity {
             scanning = true;
 
             ArrayList<ScanFilter> filters = new ArrayList<>();
-            filters.add(new ScanFilter.Builder().setServiceUuid(SERVICE_PARCEL_UUID).build());
+            filters.add(new ScanFilter.Builder().setServiceUuid(BluetoothAccess.SERVICE_PARCEL_UUID).build());
             ScanSettings settings = new ScanSettings.Builder().setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES).build();
 
             bluetoothLeScanner.startScan(filters, settings, leScanCallback);

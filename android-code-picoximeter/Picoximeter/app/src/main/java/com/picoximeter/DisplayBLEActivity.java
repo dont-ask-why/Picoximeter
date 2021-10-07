@@ -1,9 +1,10 @@
 package com.picoximeter;
 
+import static com.picoximeter.BluetoothAccess.CHARACTERISTIC_UUID;
+import static com.picoximeter.BluetoothAccess.SERVICE_UUID;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -23,17 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.picoximeter.data.ReadingDataBlock;
 import com.picoximeter.data.ReadingsViewModel;
-
 import java.util.Objects;
-import java.util.UUID;
+import java.util.concurrent.Executors;
 
 public class DisplayBLEActivity extends AppCompatActivity {
-    static final UUID SERVICE_UUID = UUID.fromString("00001822-0000-1000-8000-00805f9b34fb");
-    static final UUID CHARACTERISTIC_UUID = UUID.fromString("d761c8ea-1ac4-11ec-9621-0242ac130002");
-
     private final static String TAG = DisplayBLEActivity.class.getSimpleName();
     private BluetoothDevice device;
     private BluetoothGattCharacteristic characteristic;
@@ -72,8 +68,7 @@ public class DisplayBLEActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
-
+    private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             Log.d(TAG, "Connection State Change: " + status + " -> " + newState);
@@ -108,6 +103,12 @@ public class DisplayBLEActivity extends AppCompatActivity {
     public void updateValues(String hr, String  spo2){
         ((TextView) findViewById(R.id.display_hr_text_view)).setText(hr);
         ((TextView) findViewById(R.id.display_spo2_text_view)).setText(spo2);
+    }
+
+    public void enableButton(boolean enable){
+        if(enable != findViewById(R.id.display_ble_save_button).isEnabled()){
+            findViewById(R.id.display_ble_save_button).setEnabled(enable);
+        }
     }
 
     public void onSaveClick(View view){

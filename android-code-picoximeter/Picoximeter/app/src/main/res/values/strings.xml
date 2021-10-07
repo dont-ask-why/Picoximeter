@@ -16,7 +16,7 @@
     <string name="scan_title">BLE Device Scanner</string>
     <string name="ble_title">Pulse Oximeter</string>
     <string name="scan_toast_stopped">Scan stopped</string>
-    <string name="scan_bt_permission_text">This app needs bluetooth to connect to your device.</string>
+    <string name="scan_bt_permission_text">This app needs bluetooth to be activated for it to connect to your device.</string>
     <string name="scan_bt_permission_title">Bluetooth</string>
     <string name="scan_pos_permission_text">Bluetooth needs access to your location.</string>
     <string name="scan_pos_permission_title">Location</string>
@@ -61,4 +61,8 @@
     <string name="sort_newest_date_description">Newest Date:</string>
     <string name="sort_oldest_date_description">Oldest Date:</string>
     <string name="sort_tag_description">Select tags (optional):</string>
+    <string name="scan_12_permission_title">Scan for Bluetooth Devices</string>
+    <string name="scan_12_permission_text">To find your device, this app needs permission to scan for Bluetooth devices.</string>
+    <string name="scan_pos_permission_denied_text">This app has been denied access to your location. These are necessary by Android to use Bluetooth. Please enable this permission in your system settings.</string>
+    <string name="scan_12_permission_denied_text">This app has been denied access to  Bluetooth. Please enable this permission in your system settings.</string>
 </resources>

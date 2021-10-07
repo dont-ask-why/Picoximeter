@@ -18,7 +18,7 @@
     <string name="ble_title">Pulsoximeter</string>
     <string name="scan_toast_stopped">Suche gestoppt</string>
     <string name="scan_bt_permission_title">Bluetooth</string>
-    <string name="scan_bt_permission_text">Diese App benötigt Bluetooth um sich mit Ihrem Gerät zu verbinden.</string>
+    <string name="scan_bt_permission_text">Diese App benötigt aktiviertes Bluetooth um sich mit Ihrem Gerät zu verbinden.</string>
     <string name="scan_pos_permission_text">Bluetooth benötigt Zugriff auf Ihren Standort um zu funktionieren.</string>
     <string name="scan_pos_permission_title">Standort</string>
     <string name="title_activity_how_to">Anleitung</string>
@@ -62,4 +62,8 @@
     <string name="sort_oldest_date_description">Ältestes Datum:</string>
     <string name="sort_newest_date_description">Neuestes Datum:</string>
     <string name="sort_tag_description">Wähle Anmerkungen aus (optional):</string>
+    <string name="scan_12_permission_title">Bluetooth Geräte suchen</string>
+    <string name="scan_12_permission_text">Um Ihr Gerät zu finden, braucht diese App die Berechtigung nach diesen zu suchen.</string>
+    <string name="scan_pos_permission_denied_text">Dieser App wurde Zugriff auf Ihren Standort verwährt. Dieser ist für Android notwendig um Bluetooth zu nutzen. Bitte aktivieren Sie diese Berechtigung in den System Einstellungen.</string>
+    <string name="scan_12_permission_denied_text">Dieser App wurde Zugriff auf Bluetooth verwährt. Bitte aktivieren Sie diese Berechtigung in den System Einstellungen.</string>
 </resources>

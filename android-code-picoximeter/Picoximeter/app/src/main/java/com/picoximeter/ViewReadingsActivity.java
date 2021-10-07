@@ -87,8 +87,13 @@ public class ViewReadingsActivity extends AppCompatActivity {
 
         SMALLEST_DATE = 0;
         viewModel.getSmallestID().observe(this, id -> {
-            SMALLEST_DATE = id;
+            if(id == null){
+                SMALLEST_DATE = 0;
+            } else {
+                SMALLEST_DATE = id;
+            }
             updateObserver();
+
         });
 
         viewModel.getFilteredReadings(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags).observe(this, readings -> {
