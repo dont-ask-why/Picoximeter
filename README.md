@@ -25,4 +25,11 @@ The app is mainly focused on use in portrait mode, only some functionality has b
 <img src="./Images/Day_UI.png" alt="Bright UI for the app." height="400"/><img src="./Images/Night_UI.png" alt="Das UI for the app." height="400"/>
 
 ## License
-I have not decided on one yet, but use commons sense when modifying and using the data provided i.e. mentioning my name on use - especially for the CAD model, Android app and any graphics.
+GNU General Public License v2.0
+
+### External Libraries
+No changes to the used code libraries have been made.
+- [Pulsoximeter Code](https://github.com/oxullo/Arduino-MAX30100) from oxullo under [GNU General Public License v3.0](https://github.com/oxullo/Arduino-MAX30100/blob/master/LICENSE.md)
+- [OLED Library](https://github.com/adafruit/Adafruit_SSD1306) "Copyright (c) 2012, Adafruit Industries All rights reserved." following [this licence agreement](https://github.com/adafruit/Adafruit_SSD1306/blob/master/license.txt)
+- [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32) from espressif under [GNU Lesser General Public License v2.1](https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md)
+
