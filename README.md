@@ -6,6 +6,10 @@ The Picoximeter is a TinyPico based pulse oximeter. It sends data to an OLED scr
 
 <img src="./Images/use.jpg" alt="Pulseoximeter with app in use." width="400"/>
 
+## Disclaimer
+This is not a medical device but created for research and development only.
+The software and schematics are provided AS IS, without warranty or liability for any damages caused by use.
+
 ## Device
 ### Hardware
 The pulse oximeter is based on a 3D printer case with a TinyPico, MAX30100 (Purple PCB), 128x64px OLED Screen, a sliding switch, a 220mAh battery and a spring from a pen. A different microcontroller with the same form factor could work as well i.e. an Adafruit ItsyBitsy though I have not tried that. This might compromise BLE functionally.
