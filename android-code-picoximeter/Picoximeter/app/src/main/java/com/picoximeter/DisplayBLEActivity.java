@@ -29,6 +29,10 @@ import com.picoximeter.data.ReadingsViewModel;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 
+/**
+ * @author dont-ask-why
+ * @version 2021 December 31
+ */
 public class DisplayBLEActivity extends AppCompatActivity {
     private final static String TAG = DisplayBLEActivity.class.getSimpleName();
     private BluetoothDevice device;
@@ -46,6 +50,7 @@ public class DisplayBLEActivity extends AppCompatActivity {
         bluetoothGatt = device.connectGatt(this, false, gattCallback);
         Toast toast = Toast.makeText(this,getText(R.string.ble_toast_connected),Toast.LENGTH_SHORT);
         toast.show();
+        enableButton(false);
     }
 
     @Override
@@ -90,6 +95,7 @@ public class DisplayBLEActivity extends AppCompatActivity {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptors().get(0);
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             gatt.writeDescriptor(descriptor);
+            runOnUiThread(() -> enableButton(true));
         }
 
         @Override

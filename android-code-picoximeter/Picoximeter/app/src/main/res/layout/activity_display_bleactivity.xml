@@ -90,6 +90,7 @@
         android:layout_marginTop="32dp"
         android:onClick="onSaveClick"
         android:text="@string/ble_save"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"

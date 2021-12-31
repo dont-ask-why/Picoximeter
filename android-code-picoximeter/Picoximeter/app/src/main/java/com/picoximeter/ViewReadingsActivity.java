@@ -39,6 +39,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * @author dont-ask-why
+ * @version 2021 December 31
+ */
 public class ViewReadingsActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private FloatingActionButton fabSort;
@@ -139,10 +143,20 @@ public class ViewReadingsActivity extends AppCompatActivity {
         fabDeleteSingle.setEnabled(false);
     }
 
+    /**
+     * Simple call for observer to restart search with class variables as filters.
+     */
     private void updateObserver(){
         setNewFilter(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags);
     }
 
+    /**
+     * Call for observer to update filter with new filter properties.
+     * @param filterIsAsc contains if the data is sorted by date ascending or descending.
+     * @param filterSmallestDate using unix time, what is the smallest possible date to be shown.
+     * @param filterLargestDate using unix time, what is the largest possible date to be shown.
+     * @param filterTags what tags should the results contain, should be a String[0] for all entries.
+     */
     private void setNewFilter(boolean filterIsAsc, long filterSmallestDate, long filterLargestDate, String[] filterTags){
         if(viewModel.getFilteredReadings(this.filterIsAsc, this.filterSmallestDate, this.filterLargestDate, this.filterTags).hasObservers()){
             viewModel.getReadings().removeObservers(this);
@@ -157,6 +171,9 @@ public class ViewReadingsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Opens the Buttons for the Floating Action Button Menu.
+     */
     private void openFabMenu(){
         isFabOpen=true;
         fabSort.animate().translationY(0).alpha(1.0f);
@@ -169,6 +186,9 @@ public class ViewReadingsActivity extends AppCompatActivity {
         findViewById(R.id.past_textView_edit).animate().translationY(0).alpha(1.0f);
     }
 
+    /**
+     * Closes the Buttons for the Floating Action Button Menu.
+     */
     private void closeFabMenu(){
         isFabOpen=false;
         fabSort.animate().translationY(getResources().getDimension(R.dimen.standard_fab1)).alpha(0.0f);
@@ -182,6 +202,10 @@ public class ViewReadingsActivity extends AppCompatActivity {
         fab.bringToFront();
     }
 
+    /**
+     * When an edit is called, a layout will be shown to edit the entry.
+     * @param view links to the calling view.
+     */
     public void onEditClick(View view){
         if(currentlySelected != null){
             LayoutInflater inflater = (LayoutInflater)
@@ -227,6 +251,10 @@ public class ViewReadingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Button click to sort the entries in the list in a different way by using an opened layout.
+     * @param view reference to the calling view
+     */
     public void onSortClick(View view){
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -286,14 +314,20 @@ public class ViewReadingsActivity extends AppCompatActivity {
         });
     }
 
-
-
+    /**
+     * Button click to delete all entries.
+     * @param view reference to the calling view
+     */
     public void onDeleteAllClick(View view){
         viewModel.deleteAll();
         listView.clearChoices();
         closeFabMenu();
     }
 
+    /**
+     * Button click to delete the currently selected entry only.
+     * @param view reference to the calling view
+     */
     public void onDeleteSingleClick(View view){
         if(currentlySelected != null){
             viewModel.delete(currentlySelected);
@@ -303,6 +337,9 @@ public class ViewReadingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * ListViewAdapter to generate the list of entries properly.
+     */
     private class ListViewAdapter extends ArrayAdapter<ReadingDataBlock> {
         private ReadingDataBlock[] myList;
         private final int resource;

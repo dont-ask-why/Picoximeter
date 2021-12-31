@@ -16,7 +16,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -24,7 +24,7 @@
             android:id="@+id/scan_ble_scan_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:onClick="scan"
             android:text="@string/scan_button_enabled"

@@ -40,21 +40,11 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
         android:onClick="imageClick"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/logo_picoxi" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/short_app_name"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:srcCompat="@mipmap/logo_image_picoxi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

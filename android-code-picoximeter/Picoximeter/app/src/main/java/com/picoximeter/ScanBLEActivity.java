@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * @author dont-ask-why
+ * @version 2021 December 31
+ */
 public class ScanBLEActivity extends AppCompatActivity {
     private BluetoothLeScanner bluetoothLeScanner;
     private final Activity itself = this;
@@ -47,17 +51,20 @@ public class ScanBLEActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(getText(R.string.scan_title));
 
         bleDevices = new HashMap<>();
-
         listView = findViewById(R.id.scan_ble_listView);
 
+        if(BluetoothAccess.checkForBtPermissions(this)){
+            setupWhenPermissionGranted();
+        }
+    }
+
+    /**
+     * Setup which requires bluetooth to be allowed by the user.
+     */
+    private void setupWhenPermissionGranted(){
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
-
         BluetoothAccess.checkForBtLeEnabled(bluetoothAdapter,this);
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
-
-        BluetoothAccess.checkForBtPermissions(this);
 
         leScanCallback = new ScanCallback() {
             @Override
@@ -90,7 +97,6 @@ public class ScanBLEActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //TODO: Go through each entry in permissions and grant results, if matching to com.picoximeter.BluetoothAccess finish the activity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if(requestCode == BluetoothAccess.PERMISSION_REQUEST_BLE_SCAN){
