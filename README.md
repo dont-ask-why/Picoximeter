@@ -28,6 +28,9 @@ The app is mainly focused on use in portrait mode, only some functionality has b
 
 <img src="./Images/Day_UI.png" alt="Bright UI for the app." height="400"/><img src="./Images/Night_UI.png" alt="Das UI for the app." height="400"/>
 
+### Blood Pressure Monitoring
+In unison with the [BLE Blood Pressure Monitor Project](https://github.com/dont-ask-why/BLEBloodPressureMonitor) I implemented an option to connect to said Blood Pressure Monitor and store data from that as well.
+
 ## License
 GNU General Public License v2.0
 
