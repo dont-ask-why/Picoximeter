@@ -38,8 +38,8 @@
     <string name="menu_past_readings">Past Readings</string>
     <string name="empty_not_saved">Data was not saved.</string>
     <string name="ble_save">Save</string>
-    <string name="past_hr"> %1$s bpm</string>
-    <string name="past_spo2"> %1$s %%</string>
+    <string name="past_hr" translatable="false"> %1$s bpm</string>
+    <string name="past_spo2" translatable="false"> %1$s %%</string>
     <string name="past_fab_desc">Open more options.</string>
     <string name="past_fab_del_all_desc">Delete all entries.</string>
     <string name="past_fab_del_sin_desc">Delete the entry.</string>
@@ -65,4 +65,12 @@
     <string name="scan_12_permission_text">To find your device, this app needs permission to scan for Bluetooth devices.</string>
     <string name="scan_pos_permission_denied_text">This app has been denied access to your location. These are necessary by Android to use Bluetooth. Please enable this permission in your system settings.</string>
     <string name="scan_12_permission_denied_text">This app has been denied access to  Bluetooth. Please enable this permission in your system settings.</string>
+    <string name="bp_diastolic">"Diastolic: "</string>
+    <string name="bp_systolic">"Systolic: "</string>
+    <string name="readings_pulox">Pulseoximeter</string>
+    <string name="readings_bp">Blood Pressure</string>
+    <string name="bp_unit" translatable="false">mmHg</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="past_bp" translatable="false">%1$s mmHg</string>
+    <string name="empty" translatable="false"></string>
 </resources>

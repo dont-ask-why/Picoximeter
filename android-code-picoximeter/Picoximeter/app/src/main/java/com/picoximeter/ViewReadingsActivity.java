@@ -2,24 +2,18 @@ package com.picoximeter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.ListViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,13 +29,12 @@ import com.picoximeter.data.ReadingDataBlock;
 import com.picoximeter.data.ReadingsViewModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
  * @author dont-ask-why
- * @version 2021 December 31
+ * @version 2022 February 27
  */
 public class ViewReadingsActivity extends AppCompatActivity {
     private FloatingActionButton fab;
@@ -76,8 +69,8 @@ public class ViewReadingsActivity extends AppCompatActivity {
 
         listViewAdapter = new ListViewAdapter(
                 this,
-                R.layout.readings_list_view,
-                new ReadingDataBlock[]{new ReadingDataBlock(42, 0, 0, "No Data")});
+                R.layout.reading_list_view,
+                new ReadingDataBlock[]{new ReadingDataBlock(42, 0, 0, 0, 0, "No Data", "INVALID")});
 
         LIST_TAGS = new ArrayList<>();
         LIST_TAGS.add("No tags available");
@@ -101,7 +94,7 @@ public class ViewReadingsActivity extends AppCompatActivity {
         });
 
         viewModel.getFilteredReadings(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags).observe(this, readings -> {
-            listViewAdapter.newData(readings.toArray(new ReadingDataBlock[0]));
+            listViewAdapter.newData(readings.toArray(new com.picoximeter.data.ReadingDataBlock[0]));
         });
 
         listView.setAdapter(listViewAdapter);
@@ -208,43 +201,44 @@ public class ViewReadingsActivity extends AppCompatActivity {
      */
     public void onEditClick(View view){
         if(currentlySelected != null){
-            LayoutInflater inflater = (LayoutInflater)
-                    getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.reading_form_layout, null);
+            if(currentlySelected.getType().equals("PULOX")) {
+                LayoutInflater inflater = (LayoutInflater)
+                        getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.reading_form_layout, null);
 
-            // create the popup window
-            int width = LinearLayout.LayoutParams.MATCH_PARENT;
-            int height = LinearLayout.LayoutParams.MATCH_PARENT;
-            new PopupWindow();
-            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+                // create the popup window
+                int width = LinearLayout.LayoutParams.MATCH_PARENT;
+                int height = LinearLayout.LayoutParams.MATCH_PARENT;
+                new PopupWindow();
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
-            // show the popup window
-            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                // show the popup window
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-            Calendar c = currentlySelected.getCalender();
-            SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm", java.util.Locale.getDefault());
-            ((TextView) popupView.findViewById(R.id.form_date_text_view)).setText(sdf.format(c));
-            ((TextView) popupView.findViewById(R.id.form_hr_text_view)).setText(String.format(
-                    String.valueOf(getText(R.string.past_hr)), currentlySelected.getHr()));
-            ((TextView) popupView.findViewById(R.id.form_spo2_text_view)).setText(String.format(
-                    String.valueOf(getText(R.string.past_spo2)), currentlySelected.getSpo2()));
+                Calendar c = currentlySelected.getCalender();
+                SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm", java.util.Locale.getDefault());
+                ((TextView) popupView.findViewById(R.id.form_date_text_view)).setText(sdf.format(c));
 
-            EditText text_field = popupView.findViewById(R.id.form_custom_text_field);
-            text_field.setText(currentlySelected.getTag());
+                EditText text_field = popupView.findViewById(R.id.form_custom_text_field);
+                text_field.setText(currentlySelected.getTag());
 
-            popupView.findViewById(R.id.form_save_button).setOnClickListener(l -> {
-                if(text_field.getText().toString().isEmpty()){
-                    Toast toast = Toast.makeText(this,getText(R.string.form_string_empty),Toast.LENGTH_LONG);
-                    toast.show();
-                } else {
-                    viewModel.update(new ReadingDataBlock(
-                            currentlySelected.getId(),
-                            currentlySelected.getHr(),
-                            currentlySelected.getSpo2(),
-                            text_field.getText().toString()));
-                    popupWindow.dismiss();
-                }
-            });
+                popupView.findViewById(R.id.form_save_button).setOnClickListener(l -> {
+                    if (text_field.getText().toString().isEmpty()) {
+                        Toast toast = Toast.makeText(this, getText(R.string.form_string_empty), Toast.LENGTH_LONG);
+                        toast.show();
+                    } else {
+                        viewModel.update(new ReadingDataBlock(
+                                currentlySelected.getId(),
+                                currentlySelected.getHr(),
+                                currentlySelected.getSpo2(),
+                                0,
+                                0,
+                                text_field.getText().toString(),
+                                currentlySelected.getType()));
+                        popupWindow.dismiss();
+                    }
+                });
+            }
 
             listView.clearChoices();
             closeFabMenu();
@@ -376,16 +370,29 @@ public class ViewReadingsActivity extends AppCompatActivity {
             }
 
             TextView date = convertView.findViewById(R.id.readings_view_date);
-            assert reading != null;
             Calendar c = reading.getCalender();
             SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm", java.util.Locale.getDefault());
             date.setText(sdf.format(c));
             TextView hr = convertView.findViewById(R.id.readings_view_hr);
             hr.setText(String.format((String) getText(R.string.past_hr), reading.getHr()));
-            TextView spo2 = convertView.findViewById(R.id.readings_view_spo2);
-            spo2.setText(String.format((String) getText(R.string.past_spo2), reading.getSpo2()));
             TextView tag = convertView.findViewById(R.id.readings_view_tag);
             tag.setText(reading.getTag());
+
+            if(reading.getType().equals("PULOX")) {
+                TextView spo2 = convertView.findViewById(R.id.readings_view_second);
+                spo2.setText(String.format((String) getText(R.string.past_spo2), reading.getSpo2()));
+                ((TextView) convertView.findViewById(R.id.readings_view_second_name)).setText(R.string.ble_spo2);
+
+                ((TextView) convertView.findViewById(R.id.readings_view_third_name)).setText("");
+            } else if (reading.getType().equals("BLOOD_PRESSURE")){
+                TextView systolic = convertView.findViewById(R.id.readings_view_second);
+                systolic.setText(String.format((String) getText(R.string.past_bp), reading.getSystolic()));
+                ((TextView) convertView.findViewById(R.id.readings_view_second_name)).setText(R.string.bp_systolic);
+
+                TextView diastolic = convertView.findViewById(R.id.readings_view_third);
+                diastolic.setText(String.format((String) getText(R.string.past_bp), reading.getDiastolic()));
+                ((TextView) convertView.findViewById(R.id.readings_view_third_name)).setText(R.string.bp_diastolic);
+            }
 
             return convertView;
         }

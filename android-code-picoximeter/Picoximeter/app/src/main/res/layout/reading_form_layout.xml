@@ -29,60 +29,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="start">
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:gravity="start">
-
-            <TextView
-                android:id="@+id/form_hr_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ble_hr"
-                android:textAlignment="viewStart"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"/>
-
-            <TextView
-                android:id="@+id/form_hr_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ble_hr_unit"
-                android:textAlignment="viewStart" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:gravity="start">
-
-            <TextView
-                android:id="@+id/form_spo2_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ble_spo2"
-                android:textAlignment="viewStart"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"/>
-
-            <TextView
-                android:id="@+id/form_spo2_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ble_spo2_unit"
-                android:textAlignment="viewStart" />
-        </TableRow>
-
-        <TableRow
             android:id="@+id/form_custom_tag_row"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

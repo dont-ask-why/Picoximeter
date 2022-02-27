@@ -34,12 +34,20 @@
         <entry key="..\:/Users/Ivo Opitz/AndroidStudioProjects/Picoximeter/app/src/main/res/menu/reading_tag_menu.xml" value="0.4547008547008547" />
         <entry key="..\:/Users/Ivo Opitz/AndroidStudioProjects/Picoximeter/app/src/main/res/menu/user_menu.xml" value="0.2705128205128205" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout-land/activity_main.xml" value="0.48333333333333334" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/activity_about_page.xml" value="0.4512820512820513" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/activity_display_bleactivity.xml" value="0.4512820512820513" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/activity_how_to.xml" value="0.4512820512820513" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/activity_main.xml" value="0.4512820512820513" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/activity_scan_bleactivity.xml" value="0.4512820512820513" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/bp_reading_form_layout.xml" value="0.4512820512820513" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/bp_reading_list_view.xml" value="0.4512820512820513" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/fragment_bp_display.xml" value="0.4512820512820513" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/fragment_how_to_app.xml" value="0.4512820512820513" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/fragment_how_to_data.xml" value="0.4512820512820513" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/fragment_pulox_display.xml" value="0.4512820512820513" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/pulox_reading_form_layout.xml" value="0.2547008547008547" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/reading_form_layout.xml" value="0.4512820512820513" />
+        <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/reading_list_view.xml" value="0.25598290598290596" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/reading_sort_layout.xml" value="0.4512820512820513" />
         <entry key="..\:/Users/Ivo Opitz/Documents/GitHub/Picoximeter/android-code-picoximeter/Picoximeter/app/src/main/res/layout/readings_list_view.xml" value="0.4512820512820513" />
       </map>

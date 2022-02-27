@@ -3,6 +3,7 @@ package com.picoximeter.data;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 import java.util.List;
 

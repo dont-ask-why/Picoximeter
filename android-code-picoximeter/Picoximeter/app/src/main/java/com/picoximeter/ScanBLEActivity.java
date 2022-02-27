@@ -1,6 +1,7 @@
 package com.picoximeter;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,6 +15,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,7 +31,7 @@ import java.util.Objects;
 
 /**
  * @author dont-ask-why
- * @version 2021 December 31
+ * @version 2022 February 27
  */
 public class ScanBLEActivity extends AppCompatActivity {
     private BluetoothLeScanner bluetoothLeScanner;
@@ -61,6 +64,7 @@ public class ScanBLEActivity extends AppCompatActivity {
     /**
      * Setup which requires bluetooth to be allowed by the user.
      */
+    @SuppressLint("MissingPermission")
     private void setupWhenPermissionGranted(){
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         BluetoothAccess.checkForBtLeEnabled(bluetoothAdapter,this);
@@ -72,8 +76,21 @@ public class ScanBLEActivity extends AppCompatActivity {
                 BluetoothDevice device = result.getDevice();
                 if(device.getName() != null && result.getScanRecord().getServiceUuids() != null){
                     if(!bleDevices.containsKey(device.getName())){
-                        bleDevices.put(device.getName(), device);
-                        ((ListViewAdapter) listView.getAdapter()).newData(bleDevices.keySet().toArray(new String[0]));
+
+                        boolean containsUUID = false;
+                        for (int i = 0; i < result.getScanRecord().getServiceUuids().size() && !containsUUID; i++) {
+                            ParcelUuid uuid = result.getScanRecord().getServiceUuids().get(i);
+                            if(uuid.equals(BluetoothAccess.PULOX_SERVICE_PARCEL_UUID)){
+                                bleDevices.put(getText(R.string.readings_pulox) + ": " + device.getName(), device);
+                                ((ListViewAdapter) listView.getAdapter()).newData(bleDevices.keySet().toArray(new String[0]));
+                                containsUUID = true;
+                            } else if (uuid.equals(BluetoothAccess.BLOOD_PRESSURE_SERVICE_PARCEL_UUID)){
+                                bleDevices.put(getText(R.string.readings_bp) + ": " + device.getName(), device);
+                                ((ListViewAdapter) listView.getAdapter()).newData(bleDevices.keySet().toArray(new String[0]));
+                                containsUUID = true;
+                            }
+                        }
+
                     }
                 }
             }
@@ -87,7 +104,17 @@ public class ScanBLEActivity extends AppCompatActivity {
         listView.setAdapter(listViewAdapter);
         listView.setOnItemClickListener((adapterView, view, position, duration) -> {
             Intent intent = new Intent(itself, DisplayBLEActivity.class);
-            intent.putExtra("device", bleDevices.get(listView.getAdapter().getItem(position)));
+            BluetoothDevice device = bleDevices.get(listView.getAdapter().getItem(position));
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("device", device);
+            if(listView.getAdapter().getItem(position).toString().toLowerCase().contains("puls")){
+                bundle.putString("type", "PULOX");
+            } else {
+                bundle.putString("type", "BLOOD_PRESSURE");
+            }
+
+            intent.putExtra("extras", bundle);
             scanning = false;
             bluetoothLeScanner.stopScan(leScanCallback);
             finish();
@@ -121,6 +148,7 @@ public class ScanBLEActivity extends AppCompatActivity {
     }
 
     @Override
+    @SuppressLint("MissingPermission")
     public void onBackPressed() {
         scanning = false;
         bluetoothLeScanner.stopScan(leScanCallback);
@@ -132,6 +160,7 @@ public class ScanBLEActivity extends AppCompatActivity {
         scanLeDevice();
     }
 
+    @SuppressLint("MissingPermission")
     private void scanLeDevice() {
         Button scanButton = (Button) findViewById(R.id.scan_ble_scan_button);
         if (!scanning) {
@@ -148,12 +177,7 @@ public class ScanBLEActivity extends AppCompatActivity {
             }, SCAN_PERIOD);
 
             scanning = true;
-
-            ArrayList<ScanFilter> filters = new ArrayList<>();
-            filters.add(new ScanFilter.Builder().setServiceUuid(BluetoothAccess.SERVICE_PARCEL_UUID).build());
-            ScanSettings settings = new ScanSettings.Builder().setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES).build();
-
-            bluetoothLeScanner.startScan(filters, settings, leScanCallback);
+            bluetoothLeScanner.startScan(leScanCallback);
             scanButton.setEnabled(false);
             scanButton.setText(getText(R.string.scan_button_disabled));
         } else {

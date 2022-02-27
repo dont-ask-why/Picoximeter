@@ -9,7 +9,6 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "readings_table")
 public class ReadingDataBlock {
-
     @PrimaryKey
     @ColumnInfo(name = "id")
     private long id;
@@ -20,15 +19,32 @@ public class ReadingDataBlock {
     @ColumnInfo(name = "spo2")
     private int spo2;
 
-    @NonNull
+    @ColumnInfo(name = "systolic")
+    private int systolic;
+
+    @ColumnInfo(name = "diastolic")
+    private int diastolic;
+
     @ColumnInfo(name = "tag")
     private String tag;
 
-    public ReadingDataBlock(long id, int hr, int spo2, @NonNull String tag){
+    @ColumnInfo(name = "type")
+    private String type;
+
+    public ReadingDataBlock(long id, int hr, int spo2, int systolic, int diastolic, @NonNull String tag, @NonNull String type){
         this.id = id;
         this.hr = hr;
         this.spo2 = spo2;
+        this.systolic = systolic;
+        this.diastolic = diastolic;
         this.tag = tag;
+        this.type = type;
+    }
+
+    public Calendar getCalender(){
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(id);
+        return c;
     }
 
     public long getId() {
@@ -37,12 +53,6 @@ public class ReadingDataBlock {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Calendar getCalender(){
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(id);
-        return c;
     }
 
     public int getHr() {
@@ -61,12 +71,37 @@ public class ReadingDataBlock {
         this.spo2 = spo2;
     }
 
+    public int getSystolic() {
+        return systolic;
+    }
+
+    public void setSystolic(int systolic) {
+        this.systolic = systolic;
+    }
+
+    public int getDiastolic() {
+        return diastolic;
+    }
+
+    public void setDiastolic(int diastolic) {
+        this.diastolic = diastolic;
+    }
+
     @NonNull
     public String getTag() {
         return tag;
     }
 
-    public void setTag(@NonNull String tag) {
-        this.tag = tag;
+    public void setTag(@NonNull String tags) {
+        this.tag = tags;
+    }
+
+    @NonNull
+    public String getType() {
+        return type;
+    }
+
+    public void setType(@NonNull String type) {
+        this.type = type;
     }
 }

@@ -39,8 +39,6 @@
     <string name="menu_past_readings">Aufzeichnungen</string>
     <string name="empty_not_saved">Daten wurden nicht gespeichert.</string>
     <string name="ble_save">Speichern</string>
-    <string name="past_hr">%1$s bpm</string>
-    <string name="past_spo2">%1$s %%</string>
     <string name="past_fab_desc">Mehr Optionen öffnen.</string>
     <string name="past_fab_del_all_desc">Alle Einträge löschen.</string>
     <string name="past_fab_del_sin_desc">Ausgewählten Eintrag löschen.</string>
@@ -66,4 +64,8 @@
     <string name="scan_12_permission_text">Um Ihr Gerät zu finden, braucht diese App die Berechtigung nach diesen zu suchen.</string>
     <string name="scan_pos_permission_denied_text">Dieser App wurde Zugriff auf Ihren Standort verwährt. Dieser ist für Android notwendig um Bluetooth zu nutzen. Bitte aktivieren Sie diese Berechtigung in den System Einstellungen.</string>
     <string name="scan_12_permission_denied_text">Dieser App wurde Zugriff auf Bluetooth verwährt. Bitte aktivieren Sie diese Berechtigung in den System Einstellungen.</string>
+    <string name="bp_diastolic">"Diastolisch: "</string>
+    <string name="bp_systolic">"Systolisch: "</string>
+    <string name="readings_pulox">Pulsoximetrie</string>
+    <string name="readings_bp">Blutdruck</string>
 </resources>

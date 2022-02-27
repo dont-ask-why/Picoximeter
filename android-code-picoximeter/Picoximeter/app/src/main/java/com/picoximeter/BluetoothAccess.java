@@ -19,12 +19,15 @@ import java.util.UUID;
  * Class used to ask for Bluetooth permissions and to enable the bluetooth connection on the device.
  *
  * @author dont-ask-why
- * @version 2021 December 31
+ * @version 2022 February 27
  */
 public class BluetoothAccess {
-    public static final UUID SERVICE_UUID = UUID.fromString("00001822-0000-1000-8000-00805f9b34fb");
-    public static final UUID CHARACTERISTIC_UUID = UUID.fromString("d761c8ea-1ac4-11ec-9621-0242ac130002");
-    public static final ParcelUuid SERVICE_PARCEL_UUID = new ParcelUuid(SERVICE_UUID);
+    public static final UUID PULOX_SERVICE_UUID = UUID.fromString("00001822-0000-1000-8000-00805f9b34fb");
+    public static final UUID BLOOD_PRESSURE_SERVICE_UUID = UUID.fromString("00002A35-0000-1000-8000-00805f9b34fb");
+    public static final UUID PULOX_CHARACTERISTIC_UUID = UUID.fromString("d761c8ea-1ac4-11ec-9621-0242ac130002");
+    public static final UUID BLOOD_PRESSURE_CHARACTERISTIC_UUID = UUID.fromString("98117140-14e4-49c2-870c-f702edb5fc3d");
+    public static final ParcelUuid PULOX_SERVICE_PARCEL_UUID = new ParcelUuid(PULOX_SERVICE_UUID);
+    public static final ParcelUuid BLOOD_PRESSURE_SERVICE_PARCEL_UUID = new ParcelUuid(BLOOD_PRESSURE_SERVICE_UUID);
 
     public static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     public static final int PERMISSION_REQUEST_BLE_SCAN = 2;
