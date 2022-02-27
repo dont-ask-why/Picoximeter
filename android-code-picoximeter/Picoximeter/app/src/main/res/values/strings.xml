@@ -70,7 +70,6 @@
     <string name="readings_pulox">Pulseoximeter</string>
     <string name="readings_bp">Blood Pressure</string>
     <string name="bp_unit" translatable="false">mmHg</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="past_bp" translatable="false">%1$s mmHg</string>
-    <string name="empty" translatable="false"></string>
+    <string name="sort_type_title">Type of the Reading</string>
 </resources>

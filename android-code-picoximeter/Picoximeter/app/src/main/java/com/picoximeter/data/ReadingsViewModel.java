@@ -29,8 +29,8 @@ public class ReadingsViewModel extends AndroidViewModel {
         return mRepo.getSmallestID();
     }
 
-    public LiveData<List<ReadingDataBlock>> getFilteredReadings(boolean isAsc, long smallestDate, long largestDate, String[] tags){
-        return mRepo.getFilteredReadings(isAsc, smallestDate, largestDate, tags);
+    public LiveData<List<ReadingDataBlock>> getFilteredReadings(boolean isAsc, long smallestDate, long largestDate, String[] tags, String[] types){
+        return mRepo.getFilteredReadings(isAsc, smallestDate, largestDate, tags, types);
     }
 
     public void insert(ReadingDataBlock reading){

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -49,6 +50,7 @@ public class ViewReadingsActivity extends AppCompatActivity {
     private long filterSmallestDate = 0;
     private long filterLargestDate = Calendar.getInstance().getTimeInMillis();
     private String[] filterTags = new String[0];
+    private String[] filterTypes = new String[]{"BLOOD_PRESSURE", "PULOX"};
 
     private volatile List<String> LIST_TAGS;
     private long SMALLEST_DATE;
@@ -93,7 +95,7 @@ public class ViewReadingsActivity extends AppCompatActivity {
 
         });
 
-        viewModel.getFilteredReadings(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags).observe(this, readings -> {
+        viewModel.getFilteredReadings(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags, filterTypes).observe(this, readings -> {
             listViewAdapter.newData(readings.toArray(new com.picoximeter.data.ReadingDataBlock[0]));
         });
 
@@ -140,7 +142,7 @@ public class ViewReadingsActivity extends AppCompatActivity {
      * Simple call for observer to restart search with class variables as filters.
      */
     private void updateObserver(){
-        setNewFilter(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags);
+        setNewFilter(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags, filterTypes);
     }
 
     /**
@@ -150,16 +152,17 @@ public class ViewReadingsActivity extends AppCompatActivity {
      * @param filterLargestDate using unix time, what is the largest possible date to be shown.
      * @param filterTags what tags should the results contain, should be a String[0] for all entries.
      */
-    private void setNewFilter(boolean filterIsAsc, long filterSmallestDate, long filterLargestDate, String[] filterTags){
-        if(viewModel.getFilteredReadings(this.filterIsAsc, this.filterSmallestDate, this.filterLargestDate, this.filterTags).hasObservers()){
+    private void setNewFilter(boolean filterIsAsc, long filterSmallestDate, long filterLargestDate, String[] filterTags, String[] filterTypes){
+        if(viewModel.getFilteredReadings(this.filterIsAsc, this.filterSmallestDate, this.filterLargestDate, this.filterTags, this.filterTypes).hasObservers()){
             viewModel.getReadings().removeObservers(this);
         }
 
         this.filterIsAsc = filterIsAsc;
         this.filterSmallestDate = filterSmallestDate;
         this.filterLargestDate = filterLargestDate;
+        this.filterTypes = filterTypes;
 
-        viewModel.getFilteredReadings(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags).observe(this, readings -> {
+        viewModel.getFilteredReadings(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags, filterTypes).observe(this, readings -> {
             listViewAdapter.newData(readings.toArray(new ReadingDataBlock[0]));
         });
     }
@@ -186,12 +189,16 @@ public class ViewReadingsActivity extends AppCompatActivity {
         isFabOpen=false;
         fabSort.animate().translationY(getResources().getDimension(R.dimen.standard_fab1)).alpha(0.0f);
         findViewById(R.id.past_textView_sort).animate().translationY(getResources().getDimension(R.dimen.standard_fab1)).alpha(0.0f);
+
         fabDeleteAll.animate().translationY(getResources().getDimension(R.dimen.standard_fab2)).alpha(0.0f);
         findViewById(R.id.past_textView_del_all).animate().translationY(getResources().getDimension(R.dimen.standard_fab2)).alpha(0.0f);
+
         fabDeleteSingle.animate().translationY(getResources().getDimension(R.dimen.standard_fab3)).alpha(0.0f);
         findViewById(R.id.past_textView_del_single).animate().translationY(getResources().getDimension(R.dimen.standard_fab3)).alpha(0.0f);
+
         fabEdit.animate().translationY(getResources().getDimension(R.dimen.standard_fab4)).alpha(0.0f);
         findViewById(R.id.past_textView_edit).animate().translationY(getResources().getDimension(R.dimen.standard_fab4)).alpha(0.0f);
+
         fab.bringToFront();
     }
 
@@ -266,6 +273,17 @@ public class ViewReadingsActivity extends AppCompatActivity {
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(filterIsAsc?0:1);
 
+        CheckBox cbPulox = (CheckBox) popupView.findViewById(R.id.checkBox_pulseoximeter);
+        CheckBox cbBP = (CheckBox) popupView.findViewById(R.id.checkBox_bloodPressure);
+
+        for(String s : filterTypes){
+            if(s.equals("PULOX")){
+                cbPulox.setChecked(true);
+            } else if (s.equals("BLOOD_PRESSURE")){
+                cbBP.setChecked(true);
+            }
+        }
+
         DatePicker pickerOldest = popupView.findViewById(R.id.datePickerOldest);
         Calendar oldestDate = Calendar.getInstance();
         oldestDate.setTimeInMillis(filterSmallestDate);
@@ -298,11 +316,25 @@ public class ViewReadingsActivity extends AppCompatActivity {
         popupView.findViewById(R.id.sort_save_button).setOnClickListener(l ->{
             isTagFilterEnabled = !(checkedItems.size() == 0 || checkedItems.size() == LIST_TAGS.size());
 
+            boolean pulseoximeter = cbPulox.isChecked();
+            boolean bloodPressure = cbBP.isChecked();
+            String[] types;
+            if(pulseoximeter && bloodPressure){
+                types = new String[]{"BLOOD_PRESSURE", "PULOX"};
+            } else if (pulseoximeter) {
+                types = new String[]{"PULOX"};
+            } else if (bloodPressure) {
+                types = new String[]{"BLOOD_PRESSURE"};
+            } else {
+                types = new String[0];
+            }
+
             setNewFilter(
                     spinner.getSelectedItemPosition() == 0,
                     new GregorianCalendar(pickerOldest.getYear(), pickerOldest.getMonth(), pickerOldest.getDayOfMonth(), 0, 0, 0).getTimeInMillis(),
                     new GregorianCalendar(pickerNewest.getYear(), pickerNewest.getMonth(), pickerNewest.getDayOfMonth(), 23, 59, 59).getTimeInMillis(),
-                    isTagFilterEnabled?checkedItems.toArray(new String[0]):LIST_TAGS.toArray(new String[0])
+                    isTagFilterEnabled?checkedItems.toArray(new String[0]):LIST_TAGS.toArray(new String[0]),
+                    types
             );
             popupWindow.dismiss();
         });

@@ -68,4 +68,5 @@
     <string name="bp_systolic">"Systolisch: "</string>
     <string name="readings_pulox">Pulsoximetrie</string>
     <string name="readings_bp">Blutdruck</string>
+    <string name="sort_type_title">Art der Messung</string>
 </resources>

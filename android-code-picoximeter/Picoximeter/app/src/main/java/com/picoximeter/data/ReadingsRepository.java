@@ -30,8 +30,8 @@ public class ReadingsRepository {
         return mReadings;
     }
 
-    LiveData<List<ReadingDataBlock>> getFilteredReadings(boolean isAsc, long smallestDate, long largestDate, String[] tags){
-        return mReadingsDao.getFilteredReadings(isAsc, smallestDate, largestDate, tags);
+    LiveData<List<ReadingDataBlock>> getFilteredReadings(boolean isAsc, long smallestDate, long largestDate, String[] tags, String[] types){
+        return mReadingsDao.getFilteredReadings(isAsc, smallestDate, largestDate, tags, types);
     }
 
     void insert(ReadingDataBlock reading){

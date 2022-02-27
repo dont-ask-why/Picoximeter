@@ -31,10 +31,10 @@ public interface ReadingsDAO {
 
     @Query("SELECT * FROM readings_table " +
             "WHERE id > :smallestDate AND id < :largestDate AND tag IN (:tags) " +
-            "ORDER BY " +
+            "AND type in (:types) ORDER BY " +
             "CASE WHEN :isAsc = 1 THEN id END ASC," +
             "CASE WHEN :isAsc = 0 THEN id END DESC")
-    LiveData<List<ReadingDataBlock>> getFilteredReadings(boolean isAsc, long smallestDate, long largestDate, String[] tags);
+    LiveData<List<ReadingDataBlock>> getFilteredReadings(boolean isAsc, long smallestDate, long largestDate, String[] tags, String[] types);
 
     @Delete
     void delete(ReadingDataBlock readingDataBlock);

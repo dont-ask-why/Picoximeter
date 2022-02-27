@@ -24,20 +24,9 @@
             android:id="@+id/readings_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:choiceMode="singleChoice">
-        </ListView>
+            android:choiceMode="singleChoice"
+            android:foregroundTint="@color/list_selector"></ListView>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/past_textView_sort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/past_fab_title_sort"
-        android:textAlignment="textEnd"
-        app:layout_constraintBottom_toTopOf="@+id/past_fab_more_options"
-        app:layout_constraintEnd_toStartOf="@+id/past_fab_sort" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/past_fab_more_options"
@@ -60,11 +49,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="36dp"
         android:text="@string/past_fab_title_del_all"
         android:textAlignment="textEnd"
-        app:layout_constraintBottom_toTopOf="@+id/past_textView_sort"
-        app:layout_constraintEnd_toStartOf="@+id/past_fab_delete_all" />
+        app:layout_constraintBottom_toBottomOf="@+id/past_fab_delete_all"
+        app:layout_constraintEnd_toStartOf="@+id/past_fab_delete_all"
+        app:layout_constraintTop_toTopOf="@+id/past_fab_delete_all" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/past_fab_edit"
@@ -76,7 +65,7 @@
         android:clickable="true"
         android:contentDescription="@string/past_fab_edit_desc"
         android:focusable="true"
-        android:foregroundTint="@color/white"
+        android:foregroundTint="@color/grey"
         android:onClick="onEditClick"
         app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/past_fab_delete_single"
@@ -88,11 +77,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="36dp"
         android:text="@string/past_fab_title_del_sin"
         android:textAlignment="textEnd"
-        app:layout_constraintBottom_toTopOf="@+id/past_textView_del_all"
-        app:layout_constraintEnd_toStartOf="@+id/past_fab_delete_single" />
+        app:layout_constraintBottom_toBottomOf="@+id/past_fab_delete_single"
+        app:layout_constraintEnd_toStartOf="@+id/past_fab_delete_single"
+        app:layout_constraintTop_toTopOf="@+id/past_fab_delete_single" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/past_fab_delete_single"
@@ -117,11 +106,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="36dp"
         android:text="@string/past_fab_title_edit"
         android:textAlignment="textEnd"
-        app:layout_constraintBottom_toTopOf="@+id/past_textView_del_single"
-        app:layout_constraintEnd_toStartOf="@+id/past_fab_edit" />
+        app:layout_constraintBottom_toBottomOf="@+id/past_fab_edit"
+        app:layout_constraintEnd_toStartOf="@+id/past_fab_edit"
+        app:layout_constraintTop_toTopOf="@+id/past_fab_edit" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/past_fab_delete_all"
@@ -140,6 +129,17 @@
         app:layout_constraintBottom_toTopOf="@+id/past_fab_sort"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <TextView
+        android:id="@+id/past_textView_sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/past_fab_title_sort"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/past_fab_sort"
+        app:layout_constraintEnd_toStartOf="@+id/past_fab_sort"
+        app:layout_constraintTop_toTopOf="@+id/past_fab_sort" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/past_fab_sort"
