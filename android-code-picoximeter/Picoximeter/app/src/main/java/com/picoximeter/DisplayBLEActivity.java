@@ -1,7 +1,11 @@
 package com.picoximeter;
 
 import static com.picoximeter.BluetoothAccess.BLOOD_PRESSURE_CHARACTERISTIC_UUID;
+import static com.picoximeter.BluetoothAccess.BLOOD_PRESSURE_READ_CHARACTERISTIC_UUID;
+import static com.picoximeter.BluetoothAccess.BLOOD_PRESSURE_SERVICE_UUID;
 import static com.picoximeter.BluetoothAccess.PULOX_CHARACTERISTIC_UUID;
+import static com.picoximeter.BluetoothAccess.PULOX_SERVICE_UUID;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -42,9 +46,10 @@ public class DisplayBLEActivity extends AppCompatActivity {
     private final static String TAG = DisplayBLEActivity.class.getSimpleName();
     private BluetoothDevice device;
     private BluetoothGattCharacteristic characteristic;
+    private BluetoothGattCharacteristic readCharacteristic;
     private BluetoothGatt  bluetoothGatt;
-    private Fragment fragment;
     private String type;
+    private final DisplayBLEActivity itself = this;
 
     @Override
     @SuppressLint("MissingPermission")
@@ -63,6 +68,7 @@ public class DisplayBLEActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        Fragment fragment;
         if(type.equals("PULOX")) {
             fragment = new PuloxDisplayFragment();
             Objects.requireNonNull(getSupportActionBar()).setTitle(getText(R.string.ble_title));
@@ -106,18 +112,30 @@ public class DisplayBLEActivity extends AppCompatActivity {
                 gatt.discoverServices();
             } else if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.d(TAG, "Connection State: Not Connected");
+
+                runOnUiThread(() -> {
+                    Toast toast = Toast.makeText(itself,getText(R.string.ble_toast_disconnected),Toast.LENGTH_SHORT);
+                    toast.show();
+                    onBackPressed();
+                });
             } else if (status != BluetoothGatt.GATT_SUCCESS) {
                 Log.d(TAG, "Connection State: Not successful.");
                 gatt.disconnect();
+                runOnUiThread(() -> {
+                    Toast toast = Toast.makeText(itself,getText(R.string.ble_toast_disconnected),Toast.LENGTH_SHORT);
+                    toast.show();
+                    onBackPressed();
+                });
             }
         }
 
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if(type.equals("PULOX")) {
-                characteristic = gatt.getService(BluetoothAccess.PULOX_SERVICE_UUID).getCharacteristic(PULOX_CHARACTERISTIC_UUID);
+                characteristic = gatt.getService(PULOX_SERVICE_UUID).getCharacteristic(PULOX_CHARACTERISTIC_UUID);
             } else {
-                characteristic = gatt.getService(BluetoothAccess.BLOOD_PRESSURE_SERVICE_UUID).getCharacteristic(BLOOD_PRESSURE_CHARACTERISTIC_UUID);
+                characteristic = gatt.getService(BLOOD_PRESSURE_SERVICE_UUID).getCharacteristic(BLOOD_PRESSURE_CHARACTERISTIC_UUID);
+                readCharacteristic = gatt.getService(BLOOD_PRESSURE_SERVICE_UUID).getCharacteristic(BLOOD_PRESSURE_READ_CHARACTERISTIC_UUID);
             }
             gatt.setCharacteristicNotification(characteristic, true);
             BluetoothGattDescriptor descriptor = characteristic.getDescriptors().get(0);
@@ -129,14 +147,17 @@ public class DisplayBLEActivity extends AppCompatActivity {
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            String[] s = characteristic.getStringValue(0).split(";");
-            System.out.println(s);
-            if(type.equals("PULOX")){
-                updateSpo2Values(s[0], s[1]);
-            } else {
-                updateBloodPressureValues(s[0], s[1], s[2]);
+            if(!characteristic.getUuid().equals(BLOOD_PRESSURE_READ_CHARACTERISTIC_UUID)) {
+                String[] s = characteristic.getStringValue(0).split(";");
+                if (type.equals("PULOX")) {
+                    updateSpo2Values(s[0], s[1]);
+                } else {
+                    updateBloodPressureValues(s[0], s[1], s[2]);
+                    readCharacteristic.setValue(new byte[]{1});
+                    Log.e("CharacteristicSend", bluetoothGatt.writeCharacteristic(readCharacteristic) ? "Sucess" : "Fail");
+                }
+                runOnUiThread(() -> enableButton(true));
             }
-            runOnUiThread(() -> enableButton(true));
         }
     };
 

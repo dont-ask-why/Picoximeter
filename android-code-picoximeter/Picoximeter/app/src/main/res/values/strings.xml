@@ -72,4 +72,5 @@
     <string name="bp_unit" translatable="false">mmHg</string>
     <string name="past_bp" translatable="false">%1$s mmHg</string>
     <string name="sort_type_title">Type of the Reading</string>
+    <string name="ble_toast_disconnected">Connection lost</string>
 </resources>
