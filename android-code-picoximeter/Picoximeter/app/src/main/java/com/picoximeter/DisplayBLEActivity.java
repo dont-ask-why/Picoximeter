@@ -239,5 +239,9 @@ public class DisplayBLEActivity extends AppCompatActivity {
                 popupWindow.dismiss();
             }
         });
+        runOnUiThread(() -> {
+            Toast toast = Toast.makeText(itself,getText(R.string.data_saved),Toast.LENGTH_LONG);
+            toast.show();
+        });
     }
 }

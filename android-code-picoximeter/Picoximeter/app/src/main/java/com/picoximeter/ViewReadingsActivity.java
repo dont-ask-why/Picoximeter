@@ -92,11 +92,10 @@ public class ViewReadingsActivity extends AppCompatActivity {
                 SMALLEST_DATE = id;
             }
             updateObserver();
-
         });
 
         viewModel.getFilteredReadings(filterIsAsc, filterSmallestDate, filterLargestDate, filterTags, filterTypes).observe(this, readings -> {
-            listViewAdapter.newData(readings.toArray(new com.picoximeter.data.ReadingDataBlock[0]));
+            listViewAdapter.newData(readings.toArray(new ReadingDataBlock[0]));
         });
 
         listView.setAdapter(listViewAdapter);
@@ -208,32 +207,32 @@ public class ViewReadingsActivity extends AppCompatActivity {
      */
     public void onEditClick(View view){
         if(currentlySelected != null){
-            if(currentlySelected.getType().equals("PULOX")) {
-                LayoutInflater inflater = (LayoutInflater)
-                        getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.reading_form_layout, null);
+            LayoutInflater inflater = (LayoutInflater)
+                    getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.reading_form_layout, null);
 
-                // create the popup window
-                int width = LinearLayout.LayoutParams.MATCH_PARENT;
-                int height = LinearLayout.LayoutParams.MATCH_PARENT;
-                new PopupWindow();
-                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+            // create the popup window
+            int width = LinearLayout.LayoutParams.MATCH_PARENT;
+            int height = LinearLayout.LayoutParams.MATCH_PARENT;
+            new PopupWindow();
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
-                // show the popup window
-                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            // show the popup window
+            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-                Calendar c = currentlySelected.getCalender();
-                SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm", java.util.Locale.getDefault());
-                ((TextView) popupView.findViewById(R.id.form_date_text_view)).setText(sdf.format(c));
+            Calendar c = currentlySelected.getCalender();
+            SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm", java.util.Locale.getDefault());
+            ((TextView) popupView.findViewById(R.id.form_date_text_view)).setText(sdf.format(c));
 
-                EditText text_field = popupView.findViewById(R.id.form_custom_text_field);
-                text_field.setText(currentlySelected.getTag());
+            EditText text_field = popupView.findViewById(R.id.form_custom_text_field);
+            text_field.setText(currentlySelected.getTag());
 
-                popupView.findViewById(R.id.form_save_button).setOnClickListener(l -> {
-                    if (text_field.getText().toString().isEmpty()) {
-                        Toast toast = Toast.makeText(this, getText(R.string.form_string_empty), Toast.LENGTH_LONG);
-                        toast.show();
-                    } else {
+            popupView.findViewById(R.id.form_save_button).setOnClickListener(l -> {
+                if (text_field.getText().toString().isEmpty()) {
+                    Toast toast = Toast.makeText(this, getText(R.string.form_string_empty), Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+                    if(currentlySelected.getType().equals("PULOX")) {
                         viewModel.update(new ReadingDataBlock(
                                 currentlySelected.getId(),
                                 currentlySelected.getHr(),
@@ -242,10 +241,23 @@ public class ViewReadingsActivity extends AppCompatActivity {
                                 0,
                                 text_field.getText().toString(),
                                 currentlySelected.getType()));
-                        popupWindow.dismiss();
+                    } else if (currentlySelected.getType().equals("BLOOD_PRESSURE")){
+                        viewModel.update(new ReadingDataBlock(
+                                currentlySelected.getId(),
+                                currentlySelected.getHr(),
+                                0,
+                                currentlySelected.getSystolic(),
+                                currentlySelected.getDiastolic(),
+                                text_field.getText().toString(),
+                                currentlySelected.getType()));
                     }
-                });
-            }
+                    runOnUiThread(() -> {
+                        Toast toast = Toast.makeText(this,getText(R.string.data_edit_saved),Toast.LENGTH_LONG);
+                        toast.show();
+                    });
+                    popupWindow.dismiss();
+                }
+            });
 
             listView.clearChoices();
             closeFabMenu();
@@ -416,6 +428,8 @@ public class ViewReadingsActivity extends AppCompatActivity {
                 ((TextView) convertView.findViewById(R.id.readings_view_second_name)).setText(R.string.ble_spo2);
 
                 ((TextView) convertView.findViewById(R.id.readings_view_third_name)).setText("");
+
+                ((TextView) convertView.findViewById(R.id.readings_view_type)).setText(R.string.readings_pulox);
             } else if (reading.getType().equals("BLOOD_PRESSURE")){
                 TextView systolic = convertView.findViewById(R.id.readings_view_second);
                 systolic.setText(String.format((String) getText(R.string.past_bp), reading.getSystolic()));
@@ -424,6 +438,8 @@ public class ViewReadingsActivity extends AppCompatActivity {
                 TextView diastolic = convertView.findViewById(R.id.readings_view_third);
                 diastolic.setText(String.format((String) getText(R.string.past_bp), reading.getDiastolic()));
                 ((TextView) convertView.findViewById(R.id.readings_view_third_name)).setText(R.string.bp_diastolic);
+
+                ((TextView) convertView.findViewById(R.id.readings_view_type)).setText(R.string.readings_bp);
             }
 
             return convertView;

@@ -9,8 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textView10"
@@ -111,7 +110,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
@@ -126,26 +124,29 @@
         <ListView
             android:id="@+id/sort_tag_listView"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="64dp"
             android:layout_marginStart="64dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/sort_save_button"
+            android:choiceMode="multipleChoice"
+            android:entries="@android:array/emailAddressTypes"
+            android:maxHeight="512dp"
+            android:minHeight="64dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14"
-            android:choiceMode="multipleChoice"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <Button
             android:id="@+id/sort_save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
             android:text="@string/form_save"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sort_tag_listView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

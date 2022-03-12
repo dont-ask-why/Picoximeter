@@ -10,7 +10,7 @@
     <string name="ble_hr_value">-</string>
     <string name="scan_button_enabled">Scan</string>
     <string name="scan_button_disabled">Scanning...</string>
-    <string name="about_page">Pulse Oximetry App\nPico₂ξmeter\n\nDeveloped in 2021 by Ivo Opitz.\n\nVersion 1.0</string>
+    <string name="about_page">Pulse Oximetry App\nPico₂ξmeter\n\nDeveloped in 2021/22 by Ivo Opitz.\n\nVersion 1.2</string>
     <string name="short_app_name">pico₂ξ</string>
     <string name="ble_toast_connected">Connected</string>
     <string name="scan_title">BLE Device Scanner</string>
@@ -73,4 +73,6 @@
     <string name="past_bp" translatable="false">%1$s mmHg</string>
     <string name="sort_type_title">Type of the Reading</string>
     <string name="ble_toast_disconnected">Connection lost</string>
+    <string name="data_saved">Data saved</string>
+    <string name="data_edit_saved">Data edited</string>
 </resources>

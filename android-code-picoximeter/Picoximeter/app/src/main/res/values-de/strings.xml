@@ -11,7 +11,7 @@
     <string name="ble_hr_value">-</string>
     <string name="scan_button_enabled">Start</string>
     <string name="scan_button_disabled">Suche...</string>
-    <string name="about_page">Pulsoximetrie App\nPico₂ξmeter\n\nEntwickelt in 2021 von Ivo Opitz\n\nVersion 1.0</string>
+    <string name="about_page">Pulsoximetrie App\nPico₂ξmeter\n\nEntwickelt in 2021/22 von Ivo Opitz\n\nVersion 1.2</string>
     <string name="short_app_name">pico₂ξ</string>
     <string name="ble_toast_connected">Verbunden</string>
     <string name="scan_title">BLE Geräte Scanner</string>
@@ -70,4 +70,6 @@
     <string name="readings_bp">Blutdruck</string>
     <string name="sort_type_title">Art der Messung</string>
     <string name="ble_toast_disconnected">Verbindung verloren</string>
+    <string name="data_saved">Daten gespeichert</string>
+    <string name="data_edit_saved">Daten geändert</string>
 </resources>
